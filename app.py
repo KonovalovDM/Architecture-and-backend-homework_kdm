@@ -1,11 +1,9 @@
 from datetime import datetime, timedelta
 import json
-from logging import Logger
 import numpy as np
 from pymongo import MongoClient
-import gspread
 import pandas as pd 
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, render_template
 import os
 import pytz
 import requests
