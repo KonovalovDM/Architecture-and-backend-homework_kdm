@@ -37,3 +37,69 @@ P.S. Обратите внимание, что вам не нужно запус
 Большое спасибо за выполнение задания! Если у вас возникли вопросы или трудности, не стесняйтесь обращаться к вашему ментору. Вы также можете подписаться на мой телеграм-канал [Записки экспата-программиста](https://t.me/ExpatDevDiary) или написать мне лично в [тг](https://t.me/samoylovartem) - я всегда рад пообщаться про Python и программирование в целом. 
 
 Принял. Вторая попытка, первая не удалась. Приступил к выполнению.
+
+## Краткое описание решенных проблем
+
+Было много трудностей, дважды клонировал проект, с первого раза не смог настроить окружение.<br>
+Со второго клонирования решал проблемы с настройкой в PyCharm окружения (автоматически не подставлялся корень проекта и с ручной подстановкой были проблемы).
+Долго не настраивался правильный .venv и интерпретатор, вручную настраивал Run Configuration и проводил активацию среды. Перенастраивал запуск PowerShell в PyCharm.<br>
+Вот один из кусочков процесса настройки:
+
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> ruff check
+ruff : Имя "ruff" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Проверьте правильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+строка:1 знак:1
++ ruff check
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (ruff:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> ruff check --fix
+ruff : Имя "ruff" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Проверьте правильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+строка:1 знак:1
++ ruff check --fix
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (ruff:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> ruff format
+ruff : Имя "ruff" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Проверьте правильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+строка:1 знак:1
++ ruff format
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (ruff:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> uv add --dev ruff
+Resolved 44 packages in 0.87ms
+Audited 43 packages in 4ms
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm>
+
+В результате все же удалось все настроить и найти 38 ошибок с помощью линтера Ruff командой:<br>
++ uv run ruff check 
+3 ошибки исправлены автоматически.
+35 ошибок исправлены вручную, на завершающем этапе получен ответ:
+
+Found 11 errors.
+No fixes available (11 hidden fixes can be enabled with the `--unsafe-fixes` option).
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> uv run ruff check
+All checks passed!
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> uv run ruff format
+5 files reformatted
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm> uv run ruff format --check
+5 files already formatted
+PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm>
+
+### Итог проделанной работы:
+   * Ruff установлен и работает
+   * uv add --dev ruff - ruff добавлен в dev-зависимости
+   * uv run ruff check - все проверки пройдены
+   * uv run ruff format - 5 файлов отформатированы
+
+### Что было сделано:
+   * Установлены зависимости проекта: uv sync
+   * Добавлен ruff: uv add --dev ruff
+   * Исправлены все ошибки статического анализа:<br>
+   ___Удалены неиспользуемые импорты и переменные___<br>
+   ___Исправлены сравнения с None/True/False___<br>
+   ___Приведен код к стандартам PEP 8___
+   * Автоматическое форматирование: 5 файлов отформатированы
