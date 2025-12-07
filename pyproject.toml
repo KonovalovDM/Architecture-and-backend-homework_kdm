@@ -20,3 +20,35 @@ dev = [
     "ruff>=0.14.7",
     "ruff-format>=0.4.1",
 ]
+
+# ========== RUFF CONFIGURATION ==========
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+# Только базовые правила (менее строгий)
+select = ["E", "F", "W", "I", "UP", "YTT", "S", "C4", "DTZ", "T10"]
+
+ignore = [
+    "E501",  # line too long - обрабатывается форматтером
+    "W503",  # line break before binary operator
+    "W504",  # line break after binary operator
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+# Дополнительные настройки
+per-file-ignores = [
+    # Игнорировать все в __init__.py
+    "__init__.py: F401",
+]
+
+# Автофикс
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.isort]
+known-first-party = ["mlbcountswebapp"]
