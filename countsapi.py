@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+import pytz
 
 import pandas as pd
 import requests
@@ -297,7 +298,8 @@ def countsapi2(tid, sdate, edatestr):
 
                 return team
 
-    yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    eastern = pytz.timezone("US/Eastern")
+    yesterday = (datetime.now(eastern) - timedelta(days=1)).strftime("%m%d%Y")
     feesarr = [
         ["Nationals", 13],
         ["Mets", 13.5],

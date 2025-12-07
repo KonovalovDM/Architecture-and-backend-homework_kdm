@@ -254,9 +254,9 @@ def create_app():
         client = MongoClient(
             f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
-        from datetime import datetime, timezone
-        today = datetime.now(timezone.utc).strftime("%m%d%Y")
-        yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
+        yesterday = (datetime.now(eastern) - timedelta(days=1)).strftime("%m%d%Y")
 
         db = client["Threshold_Daily"]
         col = db[today]
@@ -279,8 +279,9 @@ def create_app():
         client = MongoClient(
             f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
-        today = datetime.today().strftime("%m%d%Y")
-        yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
+        yesterday = (datetime.now(eastern) - timedelta(days=1)).strftime("%m%d%Y")
         today = "10052022"
         db = client["Threshold_Daily"]
         col = db[today]
@@ -431,8 +432,9 @@ def create_app():
             else:
                 return pricesuggestion, mrk
 
-        today = datetime.today().strftime("%m%d%Y")
-        yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
+        yesterday = (datetime.now(eastern) - timedelta(days=1)).strftime("%m%d%Y")
         mongousername = os.environ["MANGOU"]
         mongopassword = os.environ["MANGOP"]
         client = MongoClient(
@@ -455,7 +457,8 @@ def create_app():
             "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
             % (skyid)
         )
-        today = datetime.today().strftime("%m%d%Y")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
         # client = MongoClient("mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"%(mongousername,mongopassword))
         jsonresponse = response.json()
         jsondata = jsonresponse["data"]
@@ -776,8 +779,9 @@ def create_app():
 
     @app.route("/api/sgreport", methods=["get"])
     def sgreport():
-        today = datetime.today().strftime("%m%d%Y")
-        yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
+        yesterday = (datetime.now(eastern) - timedelta(days=1)).strftime("%m%d%Y")
         mongousername = os.environ["MANGOU"]
         mongopassword = os.environ["MANGOP"]
 
@@ -806,7 +810,8 @@ def create_app():
             % (skyid)
         )
 
-        today = datetime.today().strftime("%m%d%Y")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
 
         client = MongoClient(
             f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
@@ -1424,8 +1429,9 @@ def create_app():
 
         feesarr = [["Braves", 8], ["Blue Jays", 10], ["Mariners", 8]]
 
-        today = datetime.today().strftime("%Y-%m-%d")
-        yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+        eastern = pytz.timezone("US/Eastern")
+        today = datetime.now(eastern).strftime("%m%d%Y")
+        yesterday = (datetime.now(eastern) - timedelta(days=1)).strftime("%m%d%Y")
         print(today)
         print(yesterday)
         tmid = "0F005D6BD2C14EB8"
