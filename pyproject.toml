@@ -26,16 +26,10 @@ dev = [
 line-length = 120
 target-version = "py311"
 
-# Базовые правила
+[tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "YTT", "S", "C4", "DTZ", "T10"]
-
-ignore = [
-    "E501",  # line too long - обрабатывается форматтером
-]
+ignore = ["E501"]  # line too long - обрабатывается форматтером
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-
-[tool.ruff.isort]
-known-first-party = ["mlbcountswebapp"]

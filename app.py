@@ -1,12 +1,14 @@
-from datetime import datetime, timedelta
 import json
-import numpy as np
-from pymongo import MongoClient
-import pandas as pd
-from flask import Flask, request, render_template
 import os
+from datetime import datetime, timedelta
+
+import numpy as np
+import pandas as pd
 import pytz
 import requests
+from flask import Flask, render_template, request
+from pymongo import MongoClient
+
 from countsapi import countsapi2
 from generatepayload import payloadconstructor
 from outputslack import send_slack_message
@@ -66,8 +68,7 @@ def create_app():
     @app.route("/web/counts", methods=["get"])
     def counts():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         team = request.args.get("team")
@@ -180,8 +181,7 @@ def create_app():
     @app.route("/api/col", methods=["get"])
     def getawayteam():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         def getteamid(tid):
@@ -215,8 +215,7 @@ def create_app():
     @app.route("/api/sched", methods=["get"])
     def getsched():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         def getteamid(tid):
@@ -253,10 +252,10 @@ def create_app():
     @app.route("/api/specalert", methods=["get"])
     def getspecalert():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
-        today = datetime.today().strftime("%m%d%Y")
+        from datetime import datetime, timezone
+        today = datetime.now(timezone.utc).strftime("%m%d%Y")
         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
 
         db = client["Threshold_Daily"]
@@ -278,8 +277,7 @@ def create_app():
     @app.route("/api/spinalert", methods=["get"])
     def getspinalert():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
         today = datetime.today().strftime("%m%d%Y")
         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
@@ -438,8 +436,7 @@ def create_app():
         mongousername = os.environ["MANGOU"]
         mongopassword = os.environ["MANGOP"]
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
         t = request.args.get("t")
         eid = request.args.get("eid")
@@ -619,7 +616,7 @@ def create_app():
         # newdf['maxskyseat'] = newdf['maxskyseat'].astype(int)
         newdf["Own_listing"] = newdf.apply(lambda x: matchfunction(x), axis=1)
         # to eliminate two Y's in the same section #to code when i see the situation
-        sizedf = pd.DataFrame((newdf.groupby("SECTION_NAME").size()))
+        sizedf = pd.DataFrame(newdf.groupby("SECTION_NAME").size())
         ownsizefilterdf = newdf.loc[newdf["Own_listing"] == "Y"]
         ownsizedf = pd.DataFrame(ownsizefilterdf.groupby("SECTION_NAME").size())
         ownsizedf.rename({0: "OWNSIZE"}, inplace=True, axis=1)
@@ -785,8 +782,7 @@ def create_app():
         mongopassword = os.environ["MANGOP"]
 
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         t = request.args.get("t")
@@ -813,8 +809,7 @@ def create_app():
         today = datetime.today().strftime("%m%d%Y")
 
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         jsonresponse = response.json()
@@ -1049,7 +1044,7 @@ def create_app():
         newdf["Own_listing"] = newdf.apply(lambda x: matchfunction(x), axis=1)
         # to eliminate two Y's in the same section #to code when i see the situation
 
-        sizedf = pd.DataFrame((newdf.groupby("SECTION_NAME").size()))
+        sizedf = pd.DataFrame(newdf.groupby("SECTION_NAME").size())
         sizedf.rename({0: "SIZE"}, inplace=True, axis=1)
 
         newdf = newdf.merge(sizedf["SIZE"], on="SECTION_NAME")
@@ -1113,8 +1108,7 @@ def create_app():
     @app.route("/api/sglistfull", methods=["get"])
     def sglistfull():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         t = request.args.get("t")
@@ -1160,8 +1154,7 @@ def create_app():
         print(token)
         if token == tokenkey:
             client = MongoClient(
-                "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-                % (mongousername, mongopassword)
+                f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
             )
             dbname = "mlb_sold_inventory"
             colname = "mlbsoldinventories"
@@ -1181,8 +1174,7 @@ def create_app():
         token = request.headers.get("TOKEN")
         if token == tokenkey:
             client = MongoClient(
-                "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-                % (mongousername, mongopassword)
+                f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
             )
             dbname = "mlb_sold_inventory"
             colname = "mlbsoldinventories"
@@ -1242,8 +1234,7 @@ def create_app():
         if token == tokenkey:
             date_assigned = datetime.now(pytz.timezone("US/Eastern"))
             client = MongoClient(
-                "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-                % (mongousername, mongopassword)
+                f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
             )
             updated_invoice = json.loads(request.data)
             print(updated_invoice)
@@ -1359,8 +1350,7 @@ def create_app():
     @app.route("/api/tmcounts", methods=["get"])
     def trtmlbcounts():
         client = MongoClient(
-            "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-            % (mongousername, mongopassword)
+            f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
         )
 
         def dropcheck(x):

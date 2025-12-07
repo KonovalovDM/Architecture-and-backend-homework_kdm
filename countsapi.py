@@ -1,15 +1,15 @@
 import re
-from pymongo import MongoClient
-import pandas as pd
 from datetime import datetime, timedelta
+
+import pandas as pd
 import requests
+from pymongo import MongoClient
 
 mongousername = "blabla"
 mongopassword = "blabla"
 
 client = MongoClient(
-    "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-    % (mongousername, mongopassword)
+    f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
 )
 
 dbarr = [
@@ -285,8 +285,7 @@ def countsapi2(tid, sdate, edatestr):
             return "NA", "NA"
 
     client = MongoClient(
-        "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-        % (mongousername, mongopassword)
+        f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
     )
 
     def getteamid(tid):
@@ -433,7 +432,7 @@ def countsapi2(tid, sdate, edatestr):
                     left_index=True,
                     right_index=True,
                 )
-                sizedf = pd.DataFrame((datadf.groupby(["CODE"]).size()))
+                sizedf = pd.DataFrame(datadf.groupby(["CODE"]).size())
                 sizedf.rename({0: "SIZE"}, inplace=True, axis=1)
                 datadf = datadf.merge(sizedf, how="left", on="CODE")
                 # datadf.to_csv('Aftergroupdf.csv',index=False)
@@ -665,7 +664,7 @@ def countsapi2(tid, sdate, edatestr):
                         left_index=True,
                         right_index=True,
                     )
-                    sizedf = pd.DataFrame((datadf.groupby(["CODE"]).size()))
+                    sizedf = pd.DataFrame(datadf.groupby(["CODE"]).size())
                     sizedf.rename({0: "SIZE"}, inplace=True, axis=1)
                     datadf = datadf.merge(sizedf, how="left", on="CODE")
                     # datadf.to_csv('Aftergroupdf.csv',index=False)

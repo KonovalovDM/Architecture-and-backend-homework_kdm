@@ -1,15 +1,13 @@
 import os
-from pymongo import MongoClient
-import pandas as pd
 
+import pandas as pd
+from pymongo import MongoClient
 
 mongousername = os.environ["MANGOU"]
 mongopassword = os.environ["MANGOP"]
 
-
 client = MongoClient(
-    "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
-    % (mongousername, mongopassword)
+    f"mongodb+srv://{mongousername}:{mongopassword}@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
 )
 
 usersarr = [
