@@ -1,1 +1,902 @@
-All checks passed!
+I001 [*] Import block is un-sorted or un-formatted
+  --> app.py:1:1
+   |
+ 1 | / from datetime import datetime, timedelta
+ 2 | | import json
+ 3 | | import numpy as np
+ 4 | | from pymongo import MongoClient
+ 5 | | import pandas as pd
+ 6 | | from flask import Flask, request, render_template
+ 7 | | import os
+ 8 | | import pytz
+ 9 | | import requests
+10 | | from countsapi import countsapi2
+11 | | from generatepayload import payloadconstructor
+12 | | from outputslack import send_slack_message
+   | |__________________________________________^
+13 |
+14 |   mongousername = os.environ["MANGOU"]
+   |
+help: Organize imports
+
+UP031 Use format specifiers instead of percent format
+  --> app.py:69:13
+   |
+67 |       def counts():
+68 |           client = MongoClient(
+69 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+70 | |             % (mongousername, mongopassword)
+   | |____________________________________________^
+71 |           )
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:183:13
+    |
+181 |       def getawayteam():
+182 |           client = MongoClient(
+183 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+184 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+185 |           )
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:218:13
+    |
+216 |       def getsched():
+217 |           client = MongoClient(
+218 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+219 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+220 |           )
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:256:13
+    |
+254 |       def getspecalert():
+255 |           client = MongoClient(
+256 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+257 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+258 |           )
+259 |           today = datetime.today().strftime("%m%d%Y")
+    |
+help: Replace with format specifiers
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:259:17
+    |
+257 |             % (mongousername, mongopassword)
+258 |         )
+259 |         today = datetime.today().strftime("%m%d%Y")
+    |                 ^^^^^^^^^^^^^^^^
+260 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:260:22
+    |
+258 |         )
+259 |         today = datetime.today().strftime("%m%d%Y")
+260 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    |                      ^^^^^^^^^^^^^^^^
+261 |
+262 |         db = client["Threshold_Daily"]
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:281:13
+    |
+279 |       def getspinalert():
+280 |           client = MongoClient(
+281 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+282 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+283 |           )
+284 |           today = datetime.today().strftime("%m%d%Y")
+    |
+help: Replace with format specifiers
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:284:17
+    |
+282 |             % (mongousername, mongopassword)
+283 |         )
+284 |         today = datetime.today().strftime("%m%d%Y")
+    |                 ^^^^^^^^^^^^^^^^
+285 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+286 |         today = "10052022"
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:285:22
+    |
+283 |         )
+284 |         today = datetime.today().strftime("%m%d%Y")
+285 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    |                      ^^^^^^^^^^^^^^^^
+286 |         today = "10052022"
+287 |         db = client["Threshold_Daily"]
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:436:17
+    |
+434 |                 return pricesuggestion, mrk
+435 |
+436 |         today = datetime.today().strftime("%m%d%Y")
+    |                 ^^^^^^^^^^^^^^^^
+437 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+438 |         mongousername = os.environ["MANGOU"]
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:437:22
+    |
+436 |         today = datetime.today().strftime("%m%d%Y")
+437 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    |                      ^^^^^^^^^^^^^^^^
+438 |         mongousername = os.environ["MANGOU"]
+439 |         mongopassword = os.environ["MANGOP"]
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:441:13
+    |
+439 |           mongopassword = os.environ["MANGOP"]
+440 |           client = MongoClient(
+441 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+442 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+443 |           )
+444 |           t = request.args.get("t")
+    |
+help: Replace with format specifiers
+
+S113 Probable use of `requests` call without timeout
+   --> app.py:457:20
+    |
+455 |         filterdf = skyiddf[(skyiddf["SGID"] == eid)]
+456 |         skyid = filterdf["SBID"].item()
+457 |         response = requests.get(
+    |                    ^^^^^^^^^^^^
+458 |             "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
+459 |             % (skyid)
+    |
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:458:13
+    |
+456 |           skyid = filterdf["SBID"].item()
+457 |           response = requests.get(
+458 | /             "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
+459 | |             % (skyid)
+    | |_____________________^
+460 |           )
+461 |           today = datetime.today().strftime("%m%d%Y")
+    |
+help: Replace with format specifiers
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:461:17
+    |
+459 | …         % (skyid)
+460 | …     )
+461 | …     today = datetime.today().strftime("%m%d%Y")
+    |               ^^^^^^^^^^^^^^^^
+462 | …     # client = MongoClient("mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"%(mongousername,mongopassword…
+463 | …     jsonresponse = response.json()
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP034 [*] Avoid extraneous parentheses
+   --> app.py:622:31
+    |
+620 |         newdf["Own_listing"] = newdf.apply(lambda x: matchfunction(x), axis=1)
+621 |         # to eliminate two Y's in the same section #to code when i see the situation
+622 |         sizedf = pd.DataFrame((newdf.groupby("SECTION_NAME").size()))
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+623 |         ownsizefilterdf = newdf.loc[newdf["Own_listing"] == "Y"]
+624 |         ownsizedf = pd.DataFrame(ownsizefilterdf.groupby("SECTION_NAME").size())
+    |
+help: Remove extraneous parentheses
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:782:17
+    |
+780 |     @app.route("/api/sgreport", methods=["get"])
+781 |     def sgreport():
+782 |         today = datetime.today().strftime("%m%d%Y")
+    |                 ^^^^^^^^^^^^^^^^
+783 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+784 |         mongousername = os.environ["MANGOU"]
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:783:22
+    |
+781 |     def sgreport():
+782 |         today = datetime.today().strftime("%m%d%Y")
+783 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    |                      ^^^^^^^^^^^^^^^^
+784 |         mongousername = os.environ["MANGOU"]
+785 |         mongopassword = os.environ["MANGOP"]
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:788:13
+    |
+787 |           client = MongoClient(
+788 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+789 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+790 |           )
+    |
+help: Replace with format specifiers
+
+S113 Probable use of `requests` call without timeout
+   --> app.py:808:20
+    |
+806 |         skyid = filterdf["SBID"].item()
+807 |
+808 |         response = requests.get(
+    |                    ^^^^^^^^^^^^
+809 |             "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
+810 |             % (skyid)
+    |
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:809:13
+    |
+808 |           response = requests.get(
+809 | /             "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
+810 | |             % (skyid)
+    | |_____________________^
+811 |           )
+    |
+help: Replace with format specifiers
+
+DTZ002 `datetime.datetime.today()` used
+   --> app.py:813:17
+    |
+811 |         )
+812 |
+813 |         today = datetime.today().strftime("%m%d%Y")
+    |                 ^^^^^^^^^^^^^^^^
+814 |
+815 |         client = MongoClient(
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP031 Use format specifiers instead of percent format
+   --> app.py:816:13
+    |
+815 |           client = MongoClient(
+816 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+817 | |             % (mongousername, mongopassword)
+    | |____________________________________________^
+818 |           )
+    |
+help: Replace with format specifiers
+
+UP034 [*] Avoid extraneous parentheses
+    --> app.py:1052:31
+     |
+1050 |         # to eliminate two Y's in the same section #to code when i see the situation
+1051 |
+1052 |         sizedf = pd.DataFrame((newdf.groupby("SECTION_NAME").size()))
+     |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1053 |         sizedf.rename({0: "SIZE"}, inplace=True, axis=1)
+     |
+help: Remove extraneous parentheses
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1116:13
+     |
+1114 |       def sglistfull():
+1115 |           client = MongoClient(
+1116 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+1117 | |             % (mongousername, mongopassword)
+     | |____________________________________________^
+1118 |           )
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1163:17
+     |
+1161 |           if token == tokenkey:
+1162 |               client = MongoClient(
+1163 | /                 "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+1164 | |                 % (mongousername, mongopassword)
+     | |________________________________________________^
+1165 |               )
+1166 |               dbname = "mlb_sold_inventory"
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1184:17
+     |
+1182 |           if token == tokenkey:
+1183 |               client = MongoClient(
+1184 | /                 "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+1185 | |                 % (mongousername, mongopassword)
+     | |________________________________________________^
+1186 |               )
+1187 |               dbname = "mlb_sold_inventory"
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1245:17
+     |
+1243 |               date_assigned = datetime.now(pytz.timezone("US/Eastern"))
+1244 |               client = MongoClient(
+1245 | /                 "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+1246 | |                 % (mongousername, mongopassword)
+     | |________________________________________________^
+1247 |               )
+1248 |               updated_invoice = json.loads(request.data)
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1362:13
+     |
+1360 |       def trtmlbcounts():
+1361 |           client = MongoClient(
+1362 | /             "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+1363 | |             % (mongousername, mongopassword)
+     | |____________________________________________^
+1364 |           )
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1408:26
+     |
+1406 |             fees = x["fees"]
+1407 |             intnoteval = round(((minprice + fees) * 1.2), 2)
+1408 |             intnotestr = "FP:%s +vivid" % (intnoteval)
+     |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1409 |             if unbroadcast != "Unbroadcast":
+1410 |                 return intnotestr
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1422:21
+     |
+1420 |               if sh == "Y":
+1421 |                   intnotestr = (
+1422 | /                     "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -ticketmaster"
+1423 | |                     % (intnoteval)
+     | |__________________________________^
+1424 |                   )
+1425 |               else:
+     |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1427:21
+     |
+1425 |               else:
+1426 |                   intnotestr = (
+1427 | /                     "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+1428 | |                     % (intnoteval)
+     | |__________________________________^
+1429 |                   )
+1430 |               if unbroadcast != "Unbroadcast":
+     |
+help: Replace with format specifiers
+
+DTZ002 `datetime.datetime.today()` used
+    --> app.py:1437:17
+     |
+1435 |         feesarr = [["Braves", 8], ["Blue Jays", 10], ["Mariners", 8]]
+1436 |
+1437 |         today = datetime.today().strftime("%Y-%m-%d")
+     |                 ^^^^^^^^^^^^^^^^
+1438 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+1439 |         print(today)
+     |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+DTZ002 `datetime.datetime.today()` used
+    --> app.py:1438:22
+     |
+1437 |         today = datetime.today().strftime("%Y-%m-%d")
+1438 |         yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+     |                      ^^^^^^^^^^^^^^^^
+1439 |         print(today)
+1440 |         print(yesterday)
+     |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP031 Use format specifiers instead of percent format
+    --> app.py:1442:15
+     |
+1440 |         print(yesterday)
+1441 |         tmid = "0F005D6BD2C14EB8"
+1442 |         url = "https://api.blabla.com/trt.php?token=blabla&tmid=%s" % (tmid)
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1443 |         response = requests.get(url)
+1444 |         jsonresponse = response.json()
+     |
+help: Replace with format specifiers
+
+S113 Probable use of `requests` call without timeout
+    --> app.py:1443:20
+     |
+1441 |         tmid = "0F005D6BD2C14EB8"
+1442 |         url = "https://api.blabla.com/trt.php?token=blabla&tmid=%s" % (tmid)
+1443 |         response = requests.get(url)
+     |                    ^^^^^^^^^^^^
+1444 |         jsonresponse = response.json()
+1445 |         hometeam = jsonresponse["data"][len(jsonresponse["data"]) - 1]["eventartist"]
+     |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> countsapi.py:1:1
+  |
+1 | / import re
+2 | | from pymongo import MongoClient
+3 | | import pandas as pd
+4 | | from datetime import datetime, timedelta
+5 | | import requests
+  | |_______________^
+6 |
+7 |   mongousername = "blabla"
+  |
+help: Organize imports
+
+UP031 Use format specifiers instead of percent format
+  --> countsapi.py:11:5
+   |
+10 |   client = MongoClient(
+11 | /     "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+12 | |     % (mongousername, mongopassword)
+   | |____________________________________^
+13 |   )
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:168:25
+    |
+166 |                   else:
+167 |                       bgnotes = (
+168 | /                         "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+169 | |                         % (newfv)
+    | |_________________________________^
+170 |                       )
+171 |                       return bgnotes, "NA", "New Broadcast"
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:180:25
+    |
+178 |                   else:
+179 |                       bgnotes = (
+180 | /                         "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+181 | |                         % (newfv)
+    | |_________________________________^
+182 |                       )
+183 |                       return bgnotes, "NA", "Rebroadcast"
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:218:31
+    |
+216 |                     return "NA", fpnotes, "New Broadcast"
+217 |                 else:
+218 |                     fpnotes = "FP:%s +vivid" % (newfv)
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^
+219 |                     return "NA", fpnotes, "New Broadcast"
+220 |             elif (broad == "Y") & (prevbroad == "") & (qty > 1):
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:228:31
+    |
+226 |                     return "NA", fpnotes, "Rebroadcast"
+227 |                 else:
+228 |                     fpnotes = "FP:%s +vivid" % (newfv)
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^
+229 |                     return "NA", fpnotes, "Rebroadcast"
+230 |             elif (broad == "Y") & (prevbroad == "1"):
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:251:21
+    |
+249 |               if (broad == "Y") | (qty == 1):
+250 |                   bgnotes = (
+251 | /                     "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+252 | |                     % (newfv)
+    | |_____________________________^
+253 |                   )
+254 |                   fpnotes = "FP:%s +vivid" % (newfv)
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:254:27
+    |
+252 |                     % (newfv)
+253 |                 )
+254 |                 fpnotes = "FP:%s +vivid" % (newfv)
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^
+255 |                 return bgnotes, fpnotes, "New Broadcast"
+256 |             elif (broad == "Y") | (qty > 1):
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:258:21
+    |
+256 |               elif (broad == "Y") | (qty > 1):
+257 |                   bgnotes = (
+258 | /                     "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+259 | |                     % (newfv)
+    | |_____________________________^
+260 |                   )
+261 |                   fpnotes = "FP:%s +vivid" % (newfv)
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:261:27
+    |
+259 |                     % (newfv)
+260 |                 )
+261 |                 fpnotes = "FP:%s +vivid" % (newfv)
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^
+262 |                 return bgnotes, fpnotes, "Rebroadcast"
+263 |             else:
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:288:9
+    |
+287 |       client = MongoClient(
+288 | /         "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+289 | |         % (mongousername, mongopassword)
+    | |________________________________________^
+290 |       )
+    |
+help: Replace with format specifiers
+
+DTZ002 `datetime.datetime.today()` used
+   --> countsapi.py:301:18
+    |
+299 |                 return team
+300 |
+301 |     yesterday = (datetime.today() - timedelta(days=1)).strftime("%m%d%Y")
+    |                  ^^^^^^^^^^^^^^^^
+302 |     feesarr = [
+303 |         ["Nationals", 13],
+    |
+help: Use `datetime.datetime.now(tz=...)` instead
+
+UP034 [*] Avoid extraneous parentheses
+   --> countsapi.py:436:39
+    |
+434 |                     right_index=True,
+435 |                 )
+436 |                 sizedf = pd.DataFrame((datadf.groupby(["CODE"]).size()))
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+437 |                 sizedf.rename({0: "SIZE"}, inplace=True, axis=1)
+438 |                 datadf = datadf.merge(sizedf, how="left", on="CODE")
+    |
+help: Remove extraneous parentheses
+
+S113 Probable use of `requests` call without timeout
+   --> countsapi.py:444:32
+    |
+442 |                 datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
+443 |                 # datadf.to_csv("afterBroad.csv",index=False)
+444 |                 broadresults = requests.get(
+    |                                ^^^^^^^^^^^^
+445 |                     "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone"
+446 |                     % (skyid)
+    |
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:445:21
+    |
+443 |                   # datadf.to_csv("afterBroad.csv",index=False)
+444 |                   broadresults = requests.get(
+445 | /                     "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone"
+446 | |                     % (skyid)
+    | |_____________________________^
+447 |                   )
+448 |                   broadresponse = broadresults.json()
+    |
+help: Replace with format specifiers
+
+UP034 [*] Avoid extraneous parentheses
+   --> countsapi.py:668:43
+    |
+666 |                         right_index=True,
+667 |                     )
+668 |                     sizedf = pd.DataFrame((datadf.groupby(["CODE"]).size()))
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+669 |                     sizedf.rename({0: "SIZE"}, inplace=True, axis=1)
+670 |                     datadf = datadf.merge(sizedf, how="left", on="CODE")
+    |
+help: Remove extraneous parentheses
+
+S113 Probable use of `requests` call without timeout
+   --> countsapi.py:676:36
+    |
+674 |                     datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
+675 |                     # datadf.to_csv("afterBroad.csv",index=False)
+676 |                     broadresults = requests.get(
+    |                                    ^^^^^^^^^^^^
+677 |                         "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone"
+678 |                         % (skyid)
+    |
+
+UP031 Use format specifiers instead of percent format
+   --> countsapi.py:677:25
+    |
+675 |                       # datadf.to_csv("afterBroad.csv",index=False)
+676 |                       broadresults = requests.get(
+677 | /                         "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone"
+678 | |                         % (skyid)
+    | |_________________________________^
+679 |                       )
+680 |                       broadresponse = broadresults.json()
+    |
+help: Replace with format specifiers
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> generatepayload.py:1:1
+  |
+1 | / import os
+2 | | from pymongo import MongoClient
+3 | | import pandas as pd
+  | |___________________^
+  |
+help: Organize imports
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:11:5
+   |
+10 |   client = MongoClient(
+11 | /     "mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"
+12 | |     % (mongousername, mongopassword)
+   | |____________________________________^
+13 |   )
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:70:29
+   |
+68 |                   "text": {
+69 |                       "type": "mrkdwn",
+70 |                       "text": "*%sPURCHASE REQUEST - %s %s*"
+   |  _____________________________^
+71 | |                     % (urgentstr1, invoiceid, urgentstr2),
+   | |_________________________________________________________^
+72 |                   },
+73 |               },
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:77:48
+   |
+75 |                 "type": "section",
+76 |                 "fields": [
+77 |                     {"type": "mrkdwn", "text": "*INVOICE ID:* \n %s" % (invoiceid)},
+   |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+78 |                     {
+79 |                         "type": "mrkdwn",
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:80:33
+   |
+78 |                     {
+79 |                         "type": "mrkdwn",
+80 |                         "text": "*SEC:* \n %s" % (invoicerow["section"].values.item()),
+   |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+81 |                     },
+82 |                     {
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:84:33
+   |
+82 |                     {
+83 |                         "type": "mrkdwn",
+84 |                         "text": "*ROW:* \n %s" % (invoicerow["row"].values.item()),
+   |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+85 |                     },
+86 |                     {
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:88:33
+   |
+86 |                     {
+87 |                         "type": "mrkdwn",
+88 |                         "text": "*QTY:* \n %s" % (invoicerow["quantity"].values.item()),
+   |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+89 |                     },
+90 |                     {
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+  --> generatepayload.py:92:33
+   |
+90 |                       {
+91 |                           "type": "mrkdwn",
+92 |                           "text": "*Event name:* \n %s"
+   |  _________________________________^
+93 | |                         % (invoicerow["event_name"].values.item()),
+   | |__________________________________________________________________^
+94 |                       },
+95 |                       {
+   |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:97:33
+    |
+ 95 |                       {
+ 96 |                           "type": "mrkdwn",
+ 97 |                           "text": "*Event date:* \n %s"
+    |  _________________________________^
+ 98 | |                         % (invoicerow["event_date"].values.item()),
+    | |__________________________________________________________________^
+ 99 |                       },
+100 |                       {
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:102:33
+    |
+100 |                       {
+101 |                           "type": "mrkdwn",
+102 |                           "text": "*Total SOLD Cost:* \n %s"
+    |  _________________________________^
+103 | |                         % (invoicerow["total"].values.item()),
+    | |_____________________________________________________________^
+104 |                       },
+105 |                   ],
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:116:33
+    |
+114 |                       {
+115 |                           "type": "mrkdwn",
+116 |                           "text": "*CUSTOMER:* \n %s"
+    |  _________________________________^
+117 | |                         % (invoicerow["Customer"].values.item()),
+    | |________________________________________________________________^
+118 |                       },
+119 |                   ],
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:132:28
+    |
+130 |                     },
+131 |                     "value": "click_me_123",
+132 |                     "url": "%s" % (invoicerow["Primary_Link"].values.item()),
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+133 |                     "action_id": "button-action",
+134 |                 },
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:147:28
+    |
+145 |                     },
+146 |                     "value": "click_me_123",
+147 |                     "url": "%s" % (invoicerow["SBINVOICELINK"].values.item()),
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+148 |                     "action_id": "button-action",
+149 |                 },
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:162:28
+    |
+160 |                     },
+161 |                     "value": "click_me_123",
+162 |                     "url": "%s" % (invoicerow["SBSOLDLINK"].values.item()),
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+163 |                     "action_id": "button-action",
+164 |                 },
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:177:28
+    |
+175 |                     },
+176 |                     "value": "click_me_123",
+177 |                     "url": "%s" % (invoicerow["SBINVENTORYLINK"].values.item()),
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+178 |                     "action_id": "button-action",
+179 |                 },
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:192:34
+    |
+190 |                         },
+191 |                         "style": "primary",
+192 |                         "value": "Purchased - %s" % (invoiceid),
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+193 |                     },
+194 |                     {
+    |
+help: Replace with format specifiers
+
+UP031 Use format specifiers instead of percent format
+   --> generatepayload.py:202:34
+    |
+200 |                         },
+201 |                         "style": "danger",
+202 |                         "value": "Reassign - %s" % (invoiceid),
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+203 |                     },
+204 |                 ],
+    |
+help: Replace with format specifiers
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> outputslack.py:1:1
+  |
+1 | / import requests
+2 | | import json
+  | |___________^
+  |
+help: Organize imports
+
+S113 Probable use of `requests` call without timeout
+ --> outputslack.py:6:12
+  |
+5 | def send_slack_message(payload, webhook):
+6 |     return requests.post(webhook, json.dumps(payload))
+  |            ^^^^^^^^^^^^^
+  |
+
+Found 74 errors.
+[*] 8 fixable with the `--fix` option (47 hidden fixes can be enabled with the `--unsafe-fixes` option).
