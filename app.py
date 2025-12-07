@@ -377,12 +377,7 @@ def create_app():
                     suggestedbprice = lowest_comp_price * 1.07
                     singleprice = fv * 1.5
 
-                    if (
-                        (face_value <= lowest_comp_price)
-                        & (size > ownsize)
-                        & (difference >= -2)
-                        & (difference <= 0)
-                    ):
+                    if (face_value <= lowest_comp_price) & (size > ownsize) & (difference >= -2) & (difference <= 0):
                         return round(listprice, 2), "NO CHANGES"
                     # positive difference == lower bprice
                     elif (difference > 0) & (suggestedbprice < fv) & (size > ownsize):
@@ -453,10 +448,7 @@ def create_app():
         skyiddf = pd.DataFrame(list(result))
         filterdf = skyiddf[(skyiddf["SGID"] == eid)]
         skyid = filterdf["SBID"].item()
-        response = requests.get(
-            "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
-            % (skyid)
-        )
+        response = requests.get("https://api.blabla.com/event_listings.php?token=blabla&eventid=%s" % (skyid))
         eastern = pytz.timezone("US/Eastern")
         today = datetime.now(eastern).strftime("%m%d%Y")
         # client = MongoClient("mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"%(mongousername,mongopassword))
@@ -468,9 +460,7 @@ def create_app():
             & (listdf["notes"].str.contains("BG:"))
             & (not listdf["tags"].str.contains("for-spin"))
         ]
-        broaddf["floor_value"] = broaddf["notes"].apply(
-            lambda x: str(x).split(" -")[0].split("BG:")[1]
-        )
+        broaddf["floor_value"] = broaddf["notes"].apply(lambda x: str(x).split(" -")[0].split("BG:")[1])
         if team == "Reds" or team == "Cubs" or team == "Guardians":
             broaddf["floor_value"] = broaddf["notes"].apply(
                 lambda x: str(x).split("-ticketevolution")[0].split("BG:")[1]
@@ -482,9 +472,7 @@ def create_app():
 
         # requires a mapper for some teams.
         if team == "blank":
-            broaddf["section_match"] = broaddf["section"].apply(
-                lambda x: "Section " + x[0:3] + " " + x[4:]
-            )
+            broaddf["section_match"] = broaddf["section"].apply(lambda x: "Section " + x[0:3] + " " + x[4:])
             print(broaddf)
         elif (
             team == "WhiteSox"
@@ -512,9 +500,7 @@ def create_app():
             broaddf.drop(columns=["DESC", "SG ROW START"], inplace=True)
             broaddf.rename({"SG CODE": "section_match"}, inplace=True, axis=1)
         else:
-            broaddf["section_match"] = broaddf["section"].apply(
-                lambda x: "Section " + x
-            )
+            broaddf["section_match"] = broaddf["section"].apply(lambda x: "Section " + x)
         broaddf["row_match"] = broaddf["row"].apply(lambda x: "Row " + x)
         skyseatnumdf = broaddf["seatnumbers"].str.split(",", expand=True)
         skyseatnumarr = skyseatnumdf.to_numpy(dtype=float, na_value=np.nan)
@@ -524,9 +510,7 @@ def create_app():
         newseatnumdf["maxskyseat"] = pd.DataFrame(list(skymaxseatarr))
         newseatnumdf["minskyseat"] = pd.DataFrame(list(skyminseatarr))
         skycolstokeep = ["maxskyseat", "minskyseat"]
-        newseatnumdf.drop(
-            columns=newseatnumdf.columns.difference(skycolstokeep), inplace=True
-        )
+        newseatnumdf.drop(columns=newseatnumdf.columns.difference(skycolstokeep), inplace=True)
         broaddf.reset_index(inplace=True, drop=True)
         broaddf = broaddf.join(newseatnumdf)
         filterdf = skyiddf[(skyiddf["SBID"] == skyid)]
@@ -642,12 +626,8 @@ def create_app():
                 "sgmaxseat",
                 "sgminseat",
             ]
-            datadf.drop(
-                columns=datadf.columns.difference(colstokeep), axis=1, inplace=True
-            )
-            newdf = broaddf.merge(
-                datadf, right_on=["SECTION_NAME"], left_on=["section_match"], how="left"
-            )
+            datadf.drop(columns=datadf.columns.difference(colstokeep), axis=1, inplace=True)
+            newdf = broaddf.merge(datadf, right_on=["SECTION_NAME"], left_on=["section_match"], how="left")
             # newdf.rename({'section':'SK CODE'},inplace=True,axis=1)
             newdf.fillna("NA", inplace=True)
             newdf[["pricesuggest", "MRK"]] = "NA"
@@ -707,9 +687,7 @@ def create_app():
             newdf = newdf.merge(lowestcomdf, how="left", on="SECTION_NAME")
             newdf.fillna("NO COMP", inplace=True)
 
-            newdf[["pricesuggest", "MRK"]] = newdf.apply(
-                lambda x: lowest(x), axis=1, result_type="expand"
-            )
+            newdf[["pricesuggest", "MRK"]] = newdf.apply(lambda x: lowest(x), axis=1, result_type="expand")
             newdf.drop(["min_fv", "mean_fv"], axis=1, inplace=True)
             # to find the Mrkup 2nd lowest price only if there is more than 1 count and if it is nochanges
             newdf["FACE_VALUE"] = newdf["FACE_VALUE"].astype(float)
@@ -725,9 +703,7 @@ def create_app():
             secondlowdf = secondlowdf.loc[secondlowdf["Own_listing"] == "N"]
             secondlowdf.drop("Own_listing", inplace=True, axis=1)
             newdf = newdf.merge(secondlowdf, on="SECTION_NAME", how="left")
-            newdf[["pricesuggest", "MRK"]] = newdf.apply(
-                lambda x: markup(x), axis=1, result_type="expand"
-            )
+            newdf[["pricesuggest", "MRK"]] = newdf.apply(lambda x: markup(x), axis=1, result_type="expand")
             newdfcols = newdf.columns
             if "section" not in newdfcols:
                 print("Section does not exist")
@@ -805,10 +781,7 @@ def create_app():
         filterdf = skyiddf[(skyiddf["SGID"] == eid)]
         skyid = filterdf["SBID"].item()
 
-        response = requests.get(
-            "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s"
-            % (skyid)
-        )
+        response = requests.get("https://api.blabla.com/event_listings.php?token=blabla&eventid=%s" % (skyid))
 
         eastern = pytz.timezone("US/Eastern")
         today = datetime.now(eastern).strftime("%m%d%Y")
@@ -828,24 +801,14 @@ def create_app():
             & (listdf["notes"].str.contains("BG:"))
             & (not listdf["tags"].str.contains("for-spin"))
         ]
-        broaddf["floor_value"] = broaddf["notes"].apply(
-            lambda x: str(x).split(" -")[0].split("BG:")[1]
-        )
-        if (
-            team == "Royals"
-            or team == "Pirates"
-            or team == "Reds"
-            or team == "Cubs"
-            or team == "Guardians"
-        ):
+        broaddf["floor_value"] = broaddf["notes"].apply(lambda x: str(x).split(" -")[0].split("BG:")[1])
+        if team == "Royals" or team == "Pirates" or team == "Reds" or team == "Cubs" or team == "Guardians":
             broaddf["floor_value"] = broaddf["notes"].apply(
                 lambda x: str(x).split(" -ticketevolution")[0].split("BG:")[1]
             )
 
         if team == "blank":
-            broaddf["section_match"] = broaddf["section"].apply(
-                lambda x: "Section " + x[0:3] + " " + x[4:]
-            )
+            broaddf["section_match"] = broaddf["section"].apply(lambda x: "Section " + x[0:3] + " " + x[4:])
             print(broaddf)
         elif (
             team == "Athletics"
@@ -872,9 +835,7 @@ def create_app():
             broaddf.drop(columns=["SK CODE", "DESC", "SG ROW START"], inplace=True)
             broaddf.rename({"SG CODE": "section_match"}, inplace=True, axis=1)
         else:
-            broaddf["section_match"] = broaddf["section"].apply(
-                lambda x: "Section " + x
-            )
+            broaddf["section_match"] = broaddf["section"].apply(lambda x: "Section " + x)
 
         broaddf["row_match"] = broaddf["row"].apply(lambda x: "Row " + x)
         skyseatnumdf = broaddf["seatnumbers"].str.split(",", expand=True)
@@ -885,9 +846,7 @@ def create_app():
         newseatnumdf["maxskyseat"] = pd.DataFrame(list(skymaxseatarr))
         newseatnumdf["minskyseat"] = pd.DataFrame(list(skyminseatarr))
         skycolstokeep = ["maxskyseat", "minskyseat"]
-        newseatnumdf.drop(
-            columns=newseatnumdf.columns.difference(skycolstokeep), inplace=True
-        )
+        newseatnumdf.drop(columns=newseatnumdf.columns.difference(skycolstokeep), inplace=True)
         broaddf.reset_index(inplace=True, drop=True)
         broaddf = broaddf.join(newseatnumdf)
 
@@ -931,9 +890,7 @@ def create_app():
         datadf["SECTION_NAME"] = datadf["SECTION_NAME"].convert_dtypes()
         broaddf["section_match"] = broaddf["section_match"].convert_dtypes()
 
-        newdf = datadf.merge(
-            broaddf, left_on=["SECTION_NAME"], right_on=["section_match"], how="right"
-        )
+        newdf = datadf.merge(broaddf, left_on=["SECTION_NAME"], right_on=["section_match"], how="right")
         newdf.fillna("NA", inplace=True)
         newdf.drop(
             [
@@ -1061,14 +1018,10 @@ def create_app():
         newdf.drop(["row_match", "section_match", "eventid"], axis=1, inplace=True)
 
         newdf.drop(newdf.loc[newdf["SECTION_NAME"] == "NA"].index, inplace=True)
-        meanmindf = newdf.groupby("SECTION_NAME").agg(
-            min_fv=("FACE_VALUE", "min"), mean_fv=("FACE_VALUE", "mean")
-        )
+        meanmindf = newdf.groupby("SECTION_NAME").agg(min_fv=("FACE_VALUE", "min"), mean_fv=("FACE_VALUE", "mean"))
         newdf = newdf.merge(meanmindf, how="left", on="SECTION_NAME")
 
-        newdf[["pricesuggest", "MRK"]] = newdf.apply(
-            lambda x: lowest(x), axis=1, result_type="expand"
-        )
+        newdf[["pricesuggest", "MRK"]] = newdf.apply(lambda x: lowest(x), axis=1, result_type="expand")
         newdf.drop(["min_fv", "mean_fv"], axis=1, inplace=True)
 
         # to find the Mrkup 2nd lowest price only if there is more than 1 count and if it is nochanges
@@ -1083,12 +1036,8 @@ def create_app():
 
         newdf = newdf.merge(secondlowdf, on="SECTION_NAME", how="left")
 
-        newdf[["pricesuggest", "MRK"]] = newdf.apply(
-            lambda x: markup(x), axis=1, result_type="expand"
-        )
-        newdf.drop(
-            ["row", "section", "SIZE", "bprice", "2ND_LOWEST"], axis=1, inplace=True
-        )
+        newdf[["pricesuggest", "MRK"]] = newdf.apply(lambda x: markup(x), axis=1, result_type="expand")
+        newdf.drop(["row", "section", "SIZE", "bprice", "2ND_LOWEST"], axis=1, inplace=True)
 
         colstokeep = [
             "TOTAL_PRICE",
@@ -1188,12 +1137,8 @@ def create_app():
             soldmongoresults = col.find_one({})
             data = soldmongoresults["data"]
             df = pd.DataFrame(data)
-            df["filled_date"] = pd.to_datetime(
-                df["filled_date"], errors="coerce"
-            ).dt.strftime("%m/%d/%Y")
-            df["PURCHASE_DATE"] = pd.to_datetime(
-                df["PURCHASE_DATE"], errors="coerce"
-            ).dt.strftime("%m/%d/%Y")
+            df["filled_date"] = pd.to_datetime(df["filled_date"], errors="coerce").dt.strftime("%m/%d/%Y")
+            df["PURCHASE_DATE"] = pd.to_datetime(df["PURCHASE_DATE"], errors="coerce").dt.strftime("%m/%d/%Y")
             df["filled_date"].fillna("NA", inplace=True)
             df["PURCHASE_DATE"].fillna("NA", inplace=True)
             print(df["PURCHASE_DATE"])
@@ -1229,9 +1174,7 @@ def create_app():
             colname = "mlbsoldinventories"
             db = client[dbname]
             col = db[colname]
-            soldmongoresults = col.update_many(
-                {"dataname": "soldinv"}, {"$set": {"data": solddict}}, upsert=True
-            )
+            soldmongoresults = col.update_many({"dataname": "soldinv"}, {"$set": {"data": solddict}}, upsert=True)
             print(soldmongoresults)
             return "Success"
 
@@ -1413,10 +1356,7 @@ def create_app():
             fees = x["fees"]
             intnoteval = round(((minprice + fees) * 1.2), 2)
             if sh == "Y":
-                intnotestr = (
-                    "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -ticketmaster"
-                    % (intnoteval)
-                )
+                intnotestr = "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -ticketmaster" % (intnoteval)
             else:
                 intnotestr = (
                     "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
@@ -1480,13 +1420,9 @@ def create_app():
         seccolstokeep = ["section"]
         todaysecdf = todaydf.drop(todaydf.columns.difference(seccolstokeep), axis=1)
 
-        yesterdaysecdf = yesterdaydf.drop(
-            yesterdaydf.columns.difference(seccolstokeep), axis=1
-        )
+        yesterdaysecdf = yesterdaydf.drop(yesterdaydf.columns.difference(seccolstokeep), axis=1)
 
-        comparedsec = pd.concat([todaysecdf, yesterdaysecdf]).drop_duplicates(
-            keep=False
-        )
+        comparedsec = pd.concat([todaysecdf, yesterdaysecdf]).drop_duplicates(keep=False)
 
         dropsectionarr = comparedsec.values.tolist()
 
@@ -1513,20 +1449,12 @@ def create_app():
         )
         countsdropdf[colstonumberic] = countsdropdf[colstonumberic].apply(pd.to_numeric)
 
-        countsdropdf["countdiff"] = (
-            countsdropdf["sumcount_y"] - countsdropdf["sumcount_x"]
-        )
-        countsdropdf["mindynamic"] = (
-            countsdropdf["minprice_x"] - countsdropdf["minprice_y"]
-        )
-        countsdropdf["maxdynamic"] = (
-            countsdropdf["maxprice_x"] - countsdropdf["maxprice_y"]
-        )
+        countsdropdf["countdiff"] = countsdropdf["sumcount_y"] - countsdropdf["sumcount_x"]
+        countsdropdf["mindynamic"] = countsdropdf["minprice_x"] - countsdropdf["minprice_y"]
+        countsdropdf["maxdynamic"] = countsdropdf["maxprice_x"] - countsdropdf["maxprice_y"]
         # countsdropdf['diff'] = countsdropdf.apply(lambda x: x['sumcount_y'])
         countsdropdf["drops"] = countsdropdf["countdiff"].apply(lambda x: dropcheck(x))
-        countsdropdf["dynamic"] = countsdropdf[["mindynamic", "maxdynamic"]].apply(
-            lambda x: dynamic(x), axis=1
-        )
+        countsdropdf["dynamic"] = countsdropdf[["mindynamic", "maxdynamic"]].apply(lambda x: dynamic(x), axis=1)
 
         hometeam = str(hometeam).split(" ")[len(str(hometeam).split(" ")) - 1]
         for arr in feesarr:
@@ -1536,26 +1464,18 @@ def create_app():
         csvname = hometeam + " Max Cap.csv"
         maxcapdf = pd.read_csv(csvname)
 
-        finaldf = countsdropdf.merge(
-            maxcapdf, left_on="section", right_on="Section", how="left"
-        )
+        finaldf = countsdropdf.merge(maxcapdf, left_on="section", right_on="Section", how="left")
 
         finaldf["SH"].fillna("NA", inplace=True)
         finaldf["Max"].fillna("NA", inplace=True)
         finaldf["fees"] = fees
-        finaldf["Unbroadcast"] = finaldf[["Max", "sumcount_x"]].apply(
-            lambda x: unbroadcast(x), axis=1
-        )
-        finaldf["unbroad_date"] = finaldf["Unbroadcast"].apply(
-            lambda x: today if x == "Unbroadcast" else "NA"
-        )
+        finaldf["Unbroadcast"] = finaldf[["Max", "sumcount_x"]].apply(lambda x: unbroadcast(x), axis=1)
+        finaldf["unbroad_date"] = finaldf["Unbroadcast"].apply(lambda x: today if x == "Unbroadcast" else "NA")
 
-        finaldf["FP_innotes"] = finaldf[["minprice_x", "Unbroadcast", "fees"]].apply(
-            lambda x: fpinternal(x), axis=1
+        finaldf["FP_innotes"] = finaldf[["minprice_x", "Unbroadcast", "fees"]].apply(lambda x: fpinternal(x), axis=1)
+        finaldf["BG_innotes"] = finaldf[["minprice_x", "Unbroadcast", "fees", "SH"]].apply(
+            lambda x: bginternal(x), axis=1
         )
-        finaldf["BG_innotes"] = finaldf[
-            ["minprice_x", "Unbroadcast", "fees", "SH"]
-        ].apply(lambda x: bginternal(x), axis=1)
         colstokeep = [
             "section",
             "sumcount_x",

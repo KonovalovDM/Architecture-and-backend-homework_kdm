@@ -65,8 +65,7 @@ def payloadconstructor(invoiceid):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "*%sPURCHASE REQUEST - %s %s*"
-                    % (urgentstr1, invoiceid, urgentstr2),
+                    "text": "*%sPURCHASE REQUEST - %s %s*" % (urgentstr1, invoiceid, urgentstr2),
                 },
             },
             {
@@ -87,18 +86,15 @@ def payloadconstructor(invoiceid):
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*Event name:* \n %s"
-                        % (invoicerow["event_name"].values.item()),
+                        "text": "*Event name:* \n %s" % (invoicerow["event_name"].values.item()),
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*Event date:* \n %s"
-                        % (invoicerow["event_date"].values.item()),
+                        "text": "*Event date:* \n %s" % (invoicerow["event_date"].values.item()),
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*Total SOLD Cost:* \n %s"
-                        % (invoicerow["total"].values.item()),
+                        "text": "*Total SOLD Cost:* \n %s" % (invoicerow["total"].values.item()),
                     },
                 ],
             },
@@ -111,8 +107,7 @@ def payloadconstructor(invoiceid):
                     # },
                     {
                         "type": "mrkdwn",
-                        "text": "*CUSTOMER:* \n %s"
-                        % (invoicerow["Customer"].values.item()),
+                        "text": "*CUSTOMER:* \n %s" % (invoicerow["Customer"].values.item()),
                     },
                 ],
             },

@@ -165,9 +165,8 @@ def countsapi2(tid, sdate, edatestr):
                     bgnotes = "BG:" + newfv + oldnotes
                     return bgnotes, "NA", "New Broadcast"
                 else:
-                    bgnotes = (
-                        "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
-                        % (newfv)
+                    bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (
+                        newfv
                     )
                     return bgnotes, "NA", "New Broadcast"
             elif (broad == "Y") & (prevbroad == "") & (qty > 1):
@@ -177,9 +176,8 @@ def countsapi2(tid, sdate, edatestr):
                     bgnotes = "BG:" + newfv + oldnotes
                     return bgnotes, "NA", "Rebroadcast"
                 else:
-                    bgnotes = (
-                        "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
-                        % (newfv)
+                    bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (
+                        newfv
                     )
                     return bgnotes, "NA", "Rebroadcast"
             elif (broad == "Y") & (prevbroad == "1"):
@@ -248,17 +246,11 @@ def countsapi2(tid, sdate, edatestr):
 
         elif ((bg == "N") | (fp == "N")) & (price != "NA"):
             if (broad == "Y") | (qty == 1):
-                bgnotes = (
-                    "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
-                    % (newfv)
-                )
+                bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (newfv)
                 fpnotes = "FP:%s +vivid" % (newfv)
                 return bgnotes, fpnotes, "New Broadcast"
             elif (broad == "Y") | (qty > 1):
-                bgnotes = (
-                    "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
-                    % (newfv)
-                )
+                bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (newfv)
                 fpnotes = "FP:%s +vivid" % (newfv)
                 return bgnotes, fpnotes, "Rebroadcast"
             else:
@@ -342,18 +334,10 @@ def countsapi2(tid, sdate, edatestr):
             for data in results:
                 datadf = pd.DataFrame(data["data"])
                 dateinfo = data["data"][0]["DATE"]
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "GA" if "GA" in x else x
-                )
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "LAWNS" if "LAWNS" in x else x
-                )
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "LAWN" if "LAWN" in x else x
-                )
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "BERM" if "BERM" in x else x
-                )
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "GA" if "GA" in x else x)
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "LAWNS" if "LAWNS" in x else x)
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "LAWN" if "LAWN" in x else x)
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "BERM" if "BERM" in x else x)
                 datestr = str(dateinfo).split("T")[0]
                 teamname = team.split("_Results")[0]
 
@@ -376,28 +360,18 @@ def countsapi2(tid, sdate, edatestr):
                 datadf["CAPACITY"] = datadf["CAPACITY"].astype(int)
                 sumdf = datadf.groupby(["CODE"]).agg({"COUNT": "sum"})
                 lawncapsumdf = datadf.groupby(["CODE"]).agg({"CAPACITY": "sum"})
-                lawncapsumdf = lawncapsumdf.loc[
-                    lawncapsumdf.index.isin(["GA", "LAWNS", "LAWN", "BERM"])
-                ]
+                lawncapsumdf = lawncapsumdf.loc[lawncapsumdf.index.isin(["GA", "LAWNS", "LAWN", "BERM"])]
                 lawncapsumdf.reset_index(inplace=True)
-                datadf = datadf.merge(
-                    lawncapsumdf, on="CODE", how="left", suffixes=(None, "_SUM")
-                )
-                datadf = datadf.merge(
-                    sumdf, how="left", on="CODE", suffixes=(None, "_SUM")
-                )
+                datadf = datadf.merge(lawncapsumdf, on="CODE", how="left", suffixes=(None, "_SUM"))
+                datadf = datadf.merge(sumdf, how="left", on="CODE", suffixes=(None, "_SUM"))
                 # datadf.to_csv("datadfaftersumdf.csv",index=False)
 
                 datadf["COUNT"] = datadf.apply(
-                    lambda x: x["COUNT_SUM"]
-                    if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"]
-                    else x["COUNT"],
+                    lambda x: x["COUNT_SUM"] if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"] else x["COUNT"],
                     axis=1,
                 )
                 datadf["CAPACITY"] = datadf.apply(
-                    lambda x: x["CAPACITY_SUM"]
-                    if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"]
-                    else x["CAPACITY"],
+                    lambda x: x["CAPACITY_SUM"] if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"] else x["CAPACITY"],
                     axis=1,
                 )
                 datadf["THRESHOLD"] = datadf.apply(lambda x: threshold(x), axis=1)
@@ -406,20 +380,12 @@ def countsapi2(tid, sdate, edatestr):
                     keep="first",
                     inplace=True,
                 )
-                nonlawnsdf = datadf.loc[
-                    ~datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])
-                ]
-                lawnsdf = datadf.loc[
-                    datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])
-                ]
+                nonlawnsdf = datadf.loc[~datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])]
+                lawnsdf = datadf.loc[datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])]
                 lawnsdf = lawnsdf.loc[lawnsdf["PRICE"] != "NA"]
                 datadf = pd.concat([nonlawnsdf, lawnsdf])
-                countgroupdf = datadf.groupby(["CODE"])["COUNT"].rank(
-                    ascending=True, method="first"
-                )
-                pricegroupdf = datadf.groupby("CODE")["PRICE"].rank(
-                    ascending=True, method="first"
-                )
+                countgroupdf = datadf.groupby(["CODE"])["COUNT"].rank(ascending=True, method="first")
+                pricegroupdf = datadf.groupby("CODE")["PRICE"].rank(ascending=True, method="first")
                 datadf = datadf.merge(
                     countgroupdf,
                     how="left",
@@ -443,8 +409,7 @@ def countsapi2(tid, sdate, edatestr):
                 datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
                 # datadf.to_csv("afterBroad.csv",index=False)
                 broadresults = requests.get(
-                    "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone"
-                    % (skyid)
+                    "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone" % (skyid)
                 )
                 broadresponse = broadresults.json()
                 broaddf = pd.DataFrame(broadresponse["data"])
@@ -473,9 +438,7 @@ def countsapi2(tid, sdate, edatestr):
                         "PUBLIC DESC",
                         "DESC",
                     ]
-                    datadf.drop(
-                        datadf.columns.difference(finalcolstokeep), axis=1, inplace=True
-                    )
+                    datadf.drop(datadf.columns.difference(finalcolstokeep), axis=1, inplace=True)
                     datadf = datadf.reindex(finalcolstokeep, axis=1)
                     cleandf = datadf
                     cleandf.fillna("No Data", inplace=True)
@@ -498,13 +461,9 @@ def countsapi2(tid, sdate, edatestr):
                         axis=1,
                     )
                     # broaddf.to_csv('broaddf.csv',index=False)
-                    cleandf = broaddf.merge(
-                        datadf, left_on=["section"], right_on=["CODE"], how="left"
-                    )
+                    cleandf = broaddf.merge(datadf, left_on=["section"], right_on=["CODE"], how="left")
                     # cleandf.to_csv('cleandf.csv',index=False)
-                    cleandf[["BG", "FP"]] = cleandf.apply(
-                        lambda x: intnotes(x), axis=1, result_type="expand"
-                    )
+                    cleandf[["BG", "FP"]] = cleandf.apply(lambda x: intnotes(x), axis=1, result_type="expand")
                     # cleandf.to_csv('cleandfafterinnotes.csv',index=False)
 
                     for f in feesarr:
@@ -514,9 +473,7 @@ def countsapi2(tid, sdate, edatestr):
                         else:
                             fees = 10
                     cleandf["fees"] = fees
-                    groubbydf = pd.crosstab(
-                        cleandf["CODE"], cleandf["BROADCAST"]
-                    ).reset_index(names="CODE")
+                    groubbydf = pd.crosstab(cleandf["CODE"], cleandf["BROADCAST"]).reset_index(names="CODE")
                     print(groubbydf)
                     cleandf = cleandf.merge(groubbydf, on="CODE", how="left")
                     cleandf[["bgnotes", "fpnotes", "newbroad"]] = cleandf.apply(
@@ -564,18 +521,10 @@ def countsapi2(tid, sdate, edatestr):
             for data in results:
                 datadf = pd.DataFrame(data["data"])
                 dateinfo = data["data"][0]["DATE"]
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "GA" if "GA" in x else x
-                )
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "LAWNS" if "LAWNS" in x else x
-                )
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "LAWN" if "LAWN" in x else x
-                )
-                datadf["CODE"] = datadf["CODE"].apply(
-                    lambda x: "BERM" if "BERM" in x else x
-                )
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "GA" if "GA" in x else x)
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "LAWNS" if "LAWNS" in x else x)
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "LAWN" if "LAWN" in x else x)
+                datadf["CODE"] = datadf["CODE"].apply(lambda x: "BERM" if "BERM" in x else x)
 
                 datestr = str(dateinfo).split("T")[0]
                 teamname = team.split("_Results")[0]
@@ -606,29 +555,19 @@ def countsapi2(tid, sdate, edatestr):
                     datadf["CAPACITY"] = datadf["CAPACITY"].astype(int)
                     sumdf = datadf.groupby(["CODE"]).agg({"COUNT": "sum"})
                     lawncapsumdf = datadf.groupby(["CODE"]).agg({"CAPACITY": "sum"})
-                    lawncapsumdf = lawncapsumdf.loc[
-                        lawncapsumdf.index.isin(["GA", "LAWNS", "LAWN", "BERM"])
-                    ]
+                    lawncapsumdf = lawncapsumdf.loc[lawncapsumdf.index.isin(["GA", "LAWNS", "LAWN", "BERM"])]
                     lawncapsumdf.reset_index(inplace=True)
                     # lawncapsumdf.to_csv('lawncapsumdf.csv')
-                    datadf = datadf.merge(
-                        lawncapsumdf, on="CODE", how="left", suffixes=(None, "_SUM")
-                    )
-                    datadf = datadf.merge(
-                        sumdf, how="left", on="CODE", suffixes=(None, "_SUM")
-                    )
+                    datadf = datadf.merge(lawncapsumdf, on="CODE", how="left", suffixes=(None, "_SUM"))
+                    datadf = datadf.merge(sumdf, how="left", on="CODE", suffixes=(None, "_SUM"))
                     # datadf.to_csv("datadfaftersumdf.csv",index=False)
 
                     datadf["COUNT"] = datadf.apply(
-                        lambda x: x["COUNT_SUM"]
-                        if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"]
-                        else x["COUNT"],
+                        lambda x: x["COUNT_SUM"] if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"] else x["COUNT"],
                         axis=1,
                     )
                     datadf["CAPACITY"] = datadf.apply(
-                        lambda x: x["CAPACITY_SUM"]
-                        if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"]
-                        else x["CAPACITY"],
+                        lambda x: x["CAPACITY_SUM"] if x["CODE"] in ["GA", "LAWNS", "LAWN", "BERM"] else x["CAPACITY"],
                         axis=1,
                     )
                     datadf["THRESHOLD"] = datadf.apply(lambda x: threshold(x), axis=1)
@@ -637,20 +576,12 @@ def countsapi2(tid, sdate, edatestr):
                         keep="first",
                         inplace=True,
                     )
-                    nonlawnsdf = datadf.loc[
-                        ~datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])
-                    ]
-                    lawnsdf = datadf.loc[
-                        datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])
-                    ]
+                    nonlawnsdf = datadf.loc[~datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])]
+                    lawnsdf = datadf.loc[datadf["CODE"].isin(["GA", "LAWNS", "LAWN", "BERM"])]
                     lawnsdf = lawnsdf.loc[lawnsdf["PRICE"] != "NA"]
                     datadf = pd.concat([nonlawnsdf, lawnsdf])
-                    countgroupdf = datadf.groupby(["CODE"])["COUNT"].rank(
-                        ascending=True, method="first"
-                    )
-                    pricegroupdf = datadf.groupby("CODE")["PRICE"].rank(
-                        ascending=True, method="first"
-                    )
+                    countgroupdf = datadf.groupby(["CODE"])["COUNT"].rank(ascending=True, method="first")
+                    pricegroupdf = datadf.groupby("CODE")["PRICE"].rank(ascending=True, method="first")
                     # datadf.to_csv("datadfaftersumdf.csv",index=False)
                     datadf = datadf.merge(
                         countgroupdf,
@@ -675,8 +606,7 @@ def countsapi2(tid, sdate, edatestr):
                     datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
                     # datadf.to_csv("afterBroad.csv",index=False)
                     broadresults = requests.get(
-                        "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone"
-                        % (skyid)
+                        "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone" % (skyid)
                     )
                     broadresponse = broadresults.json()
                     broaddf = pd.DataFrame(broadresponse["data"])
@@ -731,13 +661,9 @@ def countsapi2(tid, sdate, edatestr):
                             axis=1,
                         )
                         # broaddf.to_csv('broaddf.csv',index=False)
-                        cleandf = broaddf.merge(
-                            datadf, left_on=["section"], right_on=["CODE"], how="left"
-                        )
+                        cleandf = broaddf.merge(datadf, left_on=["section"], right_on=["CODE"], how="left")
                         # cleandf.to_csv('cleandf.csv',index=False)
-                        cleandf[["BG", "FP"]] = cleandf.apply(
-                            lambda x: intnotes(x), axis=1, result_type="expand"
-                        )
+                        cleandf[["BG", "FP"]] = cleandf.apply(lambda x: intnotes(x), axis=1, result_type="expand")
                         # cleandf.to_csv('cleandfafterinnotes.csv',index=False)
 
                         for f in feesarr:
@@ -747,9 +673,9 @@ def countsapi2(tid, sdate, edatestr):
                             else:
                                 fees = 10
                         cleandf["fees"] = fees
-                        groubbydf = pd.crosstab(
-                            cleandf["CODE"], cleandf["BROADCAST"], dropna=False
-                        ).reset_index(names="CODE")
+                        groubbydf = pd.crosstab(cleandf["CODE"], cleandf["BROADCAST"], dropna=False).reset_index(
+                            names="CODE"
+                        )
                         print(groubbydf)
                         cleandf = cleandf.merge(groubbydf, on="CODE", how="left")
 
