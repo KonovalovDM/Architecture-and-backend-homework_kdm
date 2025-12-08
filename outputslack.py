@@ -4,4 +4,4 @@ import requests
 
 
 def send_slack_message(payload, webhook):
-    return requests.post(webhook, json.dumps(payload))
+    return requests.post(webhook, json.dumps(payload), timeout=30)

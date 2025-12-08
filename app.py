@@ -448,7 +448,7 @@ def create_app():
         skyiddf = pd.DataFrame(list(result))
         filterdf = skyiddf[(skyiddf["SGID"] == eid)]
         skyid = filterdf["SBID"].item()
-        response = requests.get("https://api.blabla.com/event_listings.php?token=blabla&eventid=%s" % (skyid))
+        response = requests.get(f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}", timeout=30)
         eastern = pytz.timezone("US/Eastern")
         today = datetime.now(eastern).strftime("%m%d%Y")
         # client = MongoClient("mongodb+srv://%s:%s@blabla.qjokq.mongodb.net/?retryWrites=true&w=majority"%(mongousername,mongopassword))
@@ -781,7 +781,7 @@ def create_app():
         filterdf = skyiddf[(skyiddf["SGID"] == eid)]
         skyid = filterdf["SBID"].item()
 
-        response = requests.get("https://api.blabla.com/event_listings.php?token=blabla&eventid=%s" % (skyid))
+        response = requests.get(f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}", timeout=30)
 
         eastern = pytz.timezone("US/Eastern")
         today = datetime.now(eastern).strftime("%m%d%Y")
@@ -1343,7 +1343,7 @@ def create_app():
             unbroadcast = x["Unbroadcast"]
             fees = x["fees"]
             intnoteval = round(((minprice + fees) * 1.2), 2)
-            intnotestr = "FP:%s +vivid" % (intnoteval)
+            intnotestr = f"FP:%s +vivid={intnoteval}"
             if unbroadcast != "Unbroadcast":
                 return intnotestr
             else:
@@ -1356,12 +1356,11 @@ def create_app():
             fees = x["fees"]
             intnoteval = round(((minprice + fees) * 1.2), 2)
             if sh == "Y":
-                intnotestr = "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -ticketmaster" % (intnoteval)
+                intnotestr = f"BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -ticketmaster={intnoteval}"
             else:
                 intnotestr = (
-                    "BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
-                    % (intnoteval)
-                )
+                    f"BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster={intnoteval}"
+                    )
             if unbroadcast != "Unbroadcast":
                 return intnotestr
             else:
@@ -1375,8 +1374,8 @@ def create_app():
         print(today)
         print(yesterday)
         tmid = "0F005D6BD2C14EB8"
-        url = "https://api.blabla.com/trt.php?token=blabla&tmid=%s" % (tmid)
-        response = requests.get(url)
+        url = f"https://api.blabla.com/trt.php?token=blabla&tmid={tmid}"
+        response = requests.get(url, timeout=30)
         jsonresponse = response.json()
         hometeam = jsonresponse["data"][len(jsonresponse["data"]) - 1]["eventartist"]
 

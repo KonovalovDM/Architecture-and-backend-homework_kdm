@@ -165,9 +165,7 @@ def countsapi2(tid, sdate, edatestr):
                     bgnotes = "BG:" + newfv + oldnotes
                     return bgnotes, "NA", "New Broadcast"
                 else:
-                    bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (
-                        newfv
-                    )
+                    bgnotes = f"BG:{newfv} -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
                     return bgnotes, "NA", "New Broadcast"
             elif (broad == "Y") & (prevbroad == "") & (qty > 1):
                 if notes != "":
@@ -176,9 +174,7 @@ def countsapi2(tid, sdate, edatestr):
                     bgnotes = "BG:" + newfv + oldnotes
                     return bgnotes, "NA", "Rebroadcast"
                 else:
-                    bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (
-                        newfv
-                    )
+                    bgnotes = f"BG:{newfv} -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
                     return bgnotes, "NA", "Rebroadcast"
             elif (broad == "Y") & (prevbroad == "1"):
                 oldnotes = str(notes).split(oldfv)[1]
@@ -214,7 +210,7 @@ def countsapi2(tid, sdate, edatestr):
                     fpnotes = "FP:" + newfv + oldnotes
                     return "NA", fpnotes, "New Broadcast"
                 else:
-                    fpnotes = "FP:%s +vivid" % (newfv)
+                    fpnotes = f"FP:{newfv} +vivid"
                     return "NA", fpnotes, "New Broadcast"
             elif (broad == "Y") & (prevbroad == "") & (qty > 1):
                 if notes != "":
@@ -224,7 +220,7 @@ def countsapi2(tid, sdate, edatestr):
                     fpnotes = "FP:" + newfv + oldnotes
                     return "NA", fpnotes, "Rebroadcast"
                 else:
-                    fpnotes = "FP:%s +vivid" % (newfv)
+                    fpnotes = f"FP:{newfv} +vivid"
                     return "NA", fpnotes, "Rebroadcast"
             elif (broad == "Y") & (prevbroad == "1"):
                 oldnotes = str(notes).split(oldfv)[1]
@@ -246,12 +242,12 @@ def countsapi2(tid, sdate, edatestr):
 
         elif ((bg == "N") | (fp == "N")) & (price != "NA"):
             if (broad == "Y") | (qty == 1):
-                bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (newfv)
-                fpnotes = "FP:%s +vivid" % (newfv)
+                bgnotes = f"BG:{newfv} -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+                fpnotes = f"FP:{newfv} +vivid"
                 return bgnotes, fpnotes, "New Broadcast"
             elif (broad == "Y") | (qty > 1):
-                bgnotes = "BG:%s -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster" % (newfv)
-                fpnotes = "FP:%s +vivid" % (newfv)
+                bgnotes = f"BG:{newfv} -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster"
+                fpnotes = f"FP:{newfv} +vivid"
                 return bgnotes, fpnotes, "Rebroadcast"
             else:
                 return "NA", "NA", "NA"
@@ -409,7 +405,7 @@ def countsapi2(tid, sdate, edatestr):
                 datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
                 # datadf.to_csv("afterBroad.csv",index=False)
                 broadresults = requests.get(
-                    "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone" % (skyid)
+                    f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}&includeTags=zone", timeout=30
                 )
                 broadresponse = broadresults.json()
                 broaddf = pd.DataFrame(broadresponse["data"])
@@ -606,7 +602,7 @@ def countsapi2(tid, sdate, edatestr):
                     datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
                     # datadf.to_csv("afterBroad.csv",index=False)
                     broadresults = requests.get(
-                        "https://api.blabla.com/event_listings.php?token=blabla&eventid=%s&includeTags=zone" % (skyid)
+                        f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}&includeTags=zone", timeout=30
                     )
                     broadresponse = broadresults.json()
                     broaddf = pd.DataFrame(broadresponse["data"])
