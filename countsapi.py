@@ -405,7 +405,8 @@ def countsapi2(tid, sdate, edatestr):
                 datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
                 # datadf.to_csv("afterBroad.csv",index=False)
                 broadresults = requests.get(
-                    f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}&includeTags=zone", timeout=30
+                    f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}&includeTags=zone",
+                    timeout=30,
                 )
                 broadresponse = broadresults.json()
                 broaddf = pd.DataFrame(broadresponse["data"])
@@ -602,7 +603,8 @@ def countsapi2(tid, sdate, edatestr):
                     datadf["BROADCAST"] = datadf.apply(lambda x: broadcast(x), axis=1)
                     # datadf.to_csv("afterBroad.csv",index=False)
                     broadresults = requests.get(
-                        f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}&includeTags=zone", timeout=30
+                        f"https://api.blabla.com/event_listings.php?token=blabla&eventid={skyid}&includeTags=zone",
+                        timeout=30,
                     )
                     broadresponse = broadresults.json()
                     broaddf = pd.DataFrame(broadresponse["data"])

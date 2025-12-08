@@ -75,9 +75,9 @@ Audited 43 packages in 4ms
 PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm>
 
 В результате все же удалось все настроить.<br>
+
 С помощью линтера Ruff командой:<br>
 + uv run ruff check <br>
-
 Было найдено 38 ошибок<br>
 3 ошибки исправлены автоматически<br>
 35 ошибок исправлены вручную, на завершающем этапе получен ответ:
@@ -106,3 +106,11 @@ PS C:\Users\user\Documents\GitHub\Architecture-and-backend-homework_kdm>
    ___Исправлены сравнения с None/True/False___<br>
    ___Приведен код к стандартам PEP 8___
    * Автоматическое форматирование: 5 файлов отформатированы
+
+## Произведена настройка конфигурации и мягких правил в файле *pyproject.toml*
+
+Было обнаружено 37 ошибок (S113, UP031) которые были записаны в файл ruff_report.txt<br>
+История исправления ошибок отражена в коммитах файла. 
+По завершении применено форматирование "uv run ruff format"
+
+### В результате работы на команду "uv run ruff check" получен ответ "All checks passed!"

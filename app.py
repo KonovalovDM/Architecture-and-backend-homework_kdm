@@ -1358,9 +1358,7 @@ def create_app():
             if sh == "Y":
                 intnotestr = f"BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -ticketmaster={intnoteval}"
             else:
-                intnotestr = (
-                    f"BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster={intnoteval}"
-                    )
+                intnotestr = f"BG:%s -vivid -ticketevolution -tickpick -ticketnetwork -stubhub -gametime -ticketmaster={intnoteval}"
             if unbroadcast != "Unbroadcast":
                 return intnotestr
             else:
